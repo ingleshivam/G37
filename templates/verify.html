@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>
+        DIABETIC PREDICTION | EMAIL VERIFICATION
+    </title>
+   <link rel="stylesheet" href="static/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="static/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+</head>
+<body>
+
+   <main class="cd__main glass-morphism">
+      <div id='card' class="animated fadeIn">
+         <div id='upper-side'>
+            <p class="text-danger">{{msg}}</p>
+            <h3 id='status'>
+               One-time password has been sent to your email. Please check your email for the verification
+            </h3>
+         </div>
+         <div id='lower-side'>
+            <form class="form-inline" action="/validate" method="post">
+               <input type="text" name="otp"class="form-control mb-4 mr-sm-2" placeholder="OTP" required>
+
+                <input type="text" name="username" value="{{username}}"style="display:none;">
+                <input type="text" name="hashed_password" value="{{hashed_password}}"style="display:none;">
+                <input type="text" name="name" value="{{name}}"style="display:none;">
+                <input type="text" name="email" value="{{email}}"style="display:none;">
+                <input type="text" name="mob" value="{{mob}}"style="display:none;">
+                <input type="text" name="gender" value="{{gender}}"style="display:none;">
+
+               <button type="submit" class="btn  mb-2"style="background-color:#8bc34a;color:white;">Submit</button>
+            </form>
+         </div>
+      </div>
+   </main>
+
+<script>
+    function preventBack() {
+        window.history.forward();
+    }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+</script>
+</body>
+</html>
