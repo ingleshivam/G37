@@ -1,4 +1,3 @@
-# model.py
 from sklearn import svm
 from sklearn.metrics import accuracy_score
 
@@ -15,3 +14,4 @@ def evaluate_model(classifier, X_train, Y_train, X_test, Y_test):
     test_data_accuracy = accuracy_score(X_test_prediction, Y_test)
 
     return training_data_accuracy, test_data_accuracy
+

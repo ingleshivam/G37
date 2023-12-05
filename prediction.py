@@ -1,4 +1,3 @@
-# prediction.py
 import numpy as np
 
 def predict_diabetes_status(classifier, input_data):
