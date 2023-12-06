@@ -5,6 +5,9 @@ from flask_mail import *
 from random import randint
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from pymongo import MongoClient, collection
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
 cluster = MongoClient("mongodb+srv://root:root@cluster0.mngotjl.mongodb.net/?retryWrites=true&w=majority",connect=False)
 
@@ -177,6 +180,7 @@ def aboutUs():
 @app.route('/predict',methods=['GET', 'POST'])
 @login_required
 def predict():
+    s_username = session.get('s_username', 'User')
     if request.method=="POST":
         glevel = request.form['glevel']
         insulin = request.form['insulin']
@@ -194,11 +198,58 @@ def predict():
         diabetes_dataset = load_diabetes_dataset(data_path)
 
         # Get data statistics
-        shape, data_desc, outcome_counts, outcome_means = get_data_stats(diabetes_dataset)
-        print("Data Shape:", shape)
-        print("Data Description:", data_desc)
-        print("Outcome Counts:", outcome_counts)
-        print("Outcome Means:", outcome_means)
+        shape, data_desc, outcome_counts, outcome_means,dataset_head,dataset_tail,dataset_column,dataset_info= get_data_stats(diabetes_dataset)
+        # print("Data Shape:", shape)
+        # print("Data Description:", data_desc)
+        summary_stats= data_desc.transpose().round(2)
+        table2 =summary_stats.reset_index().values.tolist()
+        titles2 =summary_stats.reset_index().columns.tolist()
+        # print("Outcome Counts:", outcome_counts)
+        # print("Head",dataset_head)
+        # print('Values',dataset_head.values)
+        # print("Tail",dataset_tail)
+        # print('Column Names',dataset_column.values)
+
+
+        f, ax = plt.subplots(1, 2, figsize=(10, 5))
+        outcome_counts.plot.pie(explode=[0, 0.1], autopct='%1.1f%%', ax=ax[0], shadow=True)
+        ax[0].set_title('Outcome')
+        ax[0].set_ylabel('')
+        sns.countplot(x='Outcome', data=diabetes_dataset, ax=ax[1])
+        N, P = outcome_counts.value_counts()
+        print('Negative (0)', N)
+        print('Positive (1)', P)
+        plt.title('Count Plot')
+        plt.grid()
+        outcome_path = 'static/plots/plot1.png'
+        plt.savefig(outcome_path)
+        # plt.show()
+
+        #Histograms of each feature
+        diabetes_dataset.hist(bins=10, figsize=(10, 10))
+        histogram_path = 'static/plots/histogram.png'
+        plt.savefig(histogram_path)
+        # plt.show()
+
+        #Scatter Plot Matrix
+        from pandas.plotting import scatter_matrix
+        scatter_matrix(diabetes_dataset, figsize=(20, 20))
+        scatter_path = 'static/plots/scatter.png'
+        plt.savefig(scatter_path)
+        # plt.show()
+
+        # Corelation analysis
+        # get coreleation of each features in dataset
+        corrmat = diabetes_dataset.corr()
+        top_corr_features = corrmat.index
+        plt.figure(figsize=(10, 10))
+        # plot heat map
+        g = sns.heatmap(diabetes_dataset[top_corr_features].corr(), annot=True, cmap="RdYlGn")
+        heatmap_path = 'static/plots/heatmap.png'
+        plt.savefig(heatmap_path)
+        # plt.show()
+
+        # print("Outcome Means:", outcome_means)
 
         X = diabetes_dataset.drop(columns='Outcome')
         Y = diabetes_dataset['Outcome']
@@ -209,19 +260,47 @@ def predict():
         classifier = train_svm_classifier(X_train, Y_train)
 
         # Evaluate the model
-        training_accuracy, test_accuracy = evaluate_model(classifier, X_train, Y_train, X_test, Y_test)
+        training_accuracy, test_accuracy,cm_svm,sv_pred= evaluate_model(classifier, X_train, Y_train, X_test, Y_test)
         print('Accuracy score of the training data:', training_accuracy)
         print('Accuracy score of the test data:', test_accuracy)
+        print('Confusion Matric : ',cm_svm)
+
+        print('Confusion Matrix of SVM ')
+        plt.clf()
+        plt.imshow(cm_svm, interpolation='nearest', cmap=plt.cm.Wistia)
+        classNames = ['0', '1']
+        plt.title('Confusion Matrix of SVM')
+        plt.ylabel('Actual (true) values')
+        plt.xlabel('Predicted Values')
+        tick_marks = np.arange(len(classNames))
+        plt.xticks(tick_marks, classNames, rotation=45)
+        plt.yticks(tick_marks, classNames)
+        s = [['TN', 'FP'], ['FN', 'TP']]
+        for i in range(2):
+            for j in range(2):
+                plt.text(j, i, str(s[i][j]) + " = " + str(cm_svm[i][j]))
+        confusionMatrix = 'static/plots/histogram.png'
+        plt.savefig(confusionMatrix)
+        # plt.show()
+
+        # from sklearn.metrics import classification_report, confusion_matrix
+        # sns.heatmap(confusion_matrix(Y_test,sv_pred),annot=True,fmt='d')
+        # heatmap_path = 'static/plots/heatmap.png'
+        # plt.savefig(heatmap_path)
+        # plt.show()
 
         input_data = (glevel,insulin,bmi,age)
         prediction = predict_diabetes_status(classifier, input_data)
 
         if prediction == 0:
-            # print('The person is not diabetic')
-            return('The person is not diabetic')
+            result  = 'THE PERSON IS NOT DIABETIC'
+            # return('The person is not diabetic')
+            return render_template('predict.html',s_username=s_username,result=result,outcome_path=outcome_path,histogram_path=histogram_path,scatter_path=scatter_path,heatmap_path=heatmap_path,confusionMatrix=confusionMatrix,table1=dataset_head.reset_index().values.tolist(),titles1 = dataset_column.values,table2=table2, titles2=titles2,table3=dataset_tail.reset_index().values.tolist(), titles3=dataset_column.values,info=dataset_info)
         else:
             # print('The person is diabetic')
-            return('The person is diabetic')
+            # return('The person is diabetic')
+            result = 'THE PERSON IS DIABETIC'
+            return render_template('predict.html',s_username=s_username,result=result,outcome_path=outcome_path,histogram_path=histogram_path,scatter_path=scatter_path,heatmap_path=heatmap_path,confusionMatrix=confusionMatrix,table1=dataset_head.reset_index().values.tolist(),titles1 = dataset_column.values,table2=table2, titles2=titles2,table3=dataset_tail.reset_index().values.tolist(), titles3=dataset_column.values,info=dataset_info)
 
     else:
         return('Error Occured !')
