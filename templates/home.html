@@ -15,8 +15,8 @@
     <div class="container-scroller">
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <a class="navbar-brand brand-logo"style="color:#b66dff;" href="main.php"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
-          <a class="navbar-brand brand-logo-mini"style="color:#b66dff;" href="main.php"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
+          <a class="navbar-brand brand-logo"style="color:#b66dff;" href="/home"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
+          <a class="navbar-brand brand-logo-mini"style="color:#b66dff;" href="/home"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-stretch">
           <ul class="navbar-nav navbar-nav-right">
@@ -94,22 +94,22 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Diabetic Predictor</h4>
-                    <form action="" method="POST">
+                    <form action="/predict" method="POST">
                       <div class="form-group">
                         <label for="glevel">Glucose Level</label>
-                        <input type="text" class="form-control" id="glevel" placeholder="Glucose Level">
+                        <input type="text" class="form-control" id="glevel" name="glevel" placeholder="Glucose Level">
                       </div>
                       <div class="form-group">
                         <label for="insulin">Insulin</label>
-                        <input type="text" class="form-control" id="insulin" placeholder="Insulin">
+                        <input type="text" class="form-control" id="insulin" name="insulin" placeholder="Insulin">
                       </div>
                       <div class="form-group">
                         <label for="bmi">BMI</label>
-                        <input type="text" class="form-control" id="bmi" placeholder="BMI">
+                        <input type="text" class="form-control" id="bmi" name="bmi" placeholder="BMI">
                       </div>
                       <div class="form-group">
                         <label for="age">Age</label>
-                        <input type="text" class="form-control" id="age" placeholder="Age">
+                        <input type="text" class="form-control" id="age" name="age" placeholder="Age">
                       </div>
                       <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
                     </form>
@@ -143,12 +143,12 @@
     <script src="static/assets/js/misc.js"></script>
     <script src="static/assets/js/dashboard.js"></script>
     <script src="static/assets/js/todolist.js"></script>
-<!--   <script>-->
-<!--  function preventBack() {-->
-<!--      window.history.forward();-->
-<!--  }-->
-<!--  setTimeout("preventBack()", 0);-->
-<!--  window.onunload = function () { null };-->
-<!--  </script>-->
+     <script>
+    function preventBack() {
+        window.history.forward();
+    }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+    </script>
   </body>
 </html>
