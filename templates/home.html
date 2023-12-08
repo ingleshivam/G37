@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="static/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="static/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="static/assets/css/style.css">
-    <link rel="stylesheet" href="static/css/home.css">
-    <link rel="shortcut icon" href="static/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="static/assets/css/home.css">
   </head>
   <body>
     <div class="container-scroller">
@@ -78,18 +77,6 @@
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
-              <div class="col-12 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <video id="background-video" autoplay loop muted poster="static/images/dpp.png"width="100%" style="max-width: 100%;">
-                    <source src="static/images/dp.mp4" type="video/mp4">
-                    </video>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
               <div class="col-6 grid-margin">
                 <div class="card">
                   <div class="card-body">
@@ -97,19 +84,28 @@
                     <form action="/predict" method="POST">
                       <div class="form-group">
                         <label for="glevel">Glucose Level</label>
-                        <input type="text" class="form-control" id="glevel" name="glevel" placeholder="Glucose Level">
+                        <input type="number" class="form-control" id="glevel" name="glevel" placeholder="Glucose Level" min="0"required>
                       </div>
                       <div class="form-group">
                         <label for="insulin">Insulin</label>
-                        <input type="text" class="form-control" id="insulin" name="insulin" placeholder="Insulin">
+                        <input type="number" class="form-control" id="insulin" name="insulin" placeholder="Insulin"min="0" required>
                       </div>
                       <div class="form-group">
                         <label for="bmi">BMI</label>
-                        <input type="text" class="form-control" id="bmi" name="bmi" placeholder="BMI">
+                        <input type="number" step="0.01" class="form-control" id="bmi" name="bmi" placeholder="BMI" min="0" required>
                       </div>
                       <div class="form-group">
-                        <label for="age">Age</label>
-                        <input type="text" class="form-control" id="age" name="age" placeholder="Age">
+                        <div class="row">
+                          <div class="form-group col-6">
+                              <label for="dob">Select Age</label>
+                              <input type="date" class="form-control " id="dob" name="dob" placeholder="DOB" required>
+                          </div>
+
+                          <div class="form-group col-6">
+                              <label for="age">Age</label>
+                              <input type="text" class="form-control" id="age" name="age" placeholder="Age"required>
+                          </div>
+                        </div>
                       </div>
                       <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
                     </form>
@@ -126,6 +122,7 @@
                         <input type="file" class="form-control" accept=".csv, .jpg, .png"name="uploadFile" id="uploadInput" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                         <button class="btn btn-outline-primary" type="submit" id="uplaodBtn">Upload</button>
                       </div>
+                        <small class="text-info">Accepts only .csv file !</small>
                     </form>
                   </div>
                 </div>
@@ -143,12 +140,14 @@
     <script src="static/assets/js/misc.js"></script>
     <script src="static/assets/js/dashboard.js"></script>
     <script src="static/assets/js/todolist.js"></script>
-     <script>
-    function preventBack() {
-        window.history.forward();
-    }
-    setTimeout("preventBack()", 0);
-    window.onunload = function () { null };
-    </script>
+    <script src="static/assets/js/index.js"></script>
+
+<!--     <script>-->
+<!--    function preventBack() {-->
+<!--        window.history.forward();-->
+<!--    }-->
+<!--    setTimeout("preventBack()", 0);-->
+<!--    window.onunload = function () { null };-->
+<!--    </script>-->
   </body>
 </html>

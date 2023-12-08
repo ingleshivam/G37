@@ -8,6 +8,7 @@ from pymongo import MongoClient, collection
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+from sklearn.metrics import precision_score,recall_score,f1_score,classification_report
 
 cluster = MongoClient("mongodb+srv://root:root@cluster0.mngotjl.mongodb.net/?retryWrites=true&w=majority",connect=False)
 
@@ -226,7 +227,8 @@ def predict():
         # plt.show()
 
         #Histograms of each feature
-        diabetes_dataset.hist(bins=10, figsize=(10, 10))
+        new_size1=(10,10)
+        diabetes_dataset.hist(bins=10, figsize=new_size1)
         histogram_path = 'static/plots/histogram.png'
         plt.savefig(histogram_path)
         # plt.show()
@@ -242,7 +244,8 @@ def predict():
         # get coreleation of each features in dataset
         corrmat = diabetes_dataset.corr()
         top_corr_features = corrmat.index
-        plt.figure(figsize=(10, 10))
+        new_size2=(10,10)
+        plt.figure(figsize=new_size2)
         # plot heat map
         g = sns.heatmap(diabetes_dataset[top_corr_features].corr(), annot=True, cmap="RdYlGn")
         heatmap_path = 'static/plots/heatmap.png'
@@ -261,8 +264,13 @@ def predict():
 
         # Evaluate the model
         training_accuracy, test_accuracy,cm_svm,sv_pred= evaluate_model(classifier, X_train, Y_train, X_test, Y_test)
-        print('Accuracy score of the training data:', training_accuracy)
-        print('Accuracy score of the test data:', test_accuracy)
+        print('Accuracy score of the training data:', training_accuracy*100)
+        print('Accuracy score of the test data:', test_accuracy*100)
+        print(' Precision Score of SVM : ', precision_score(Y_test, sv_pred) * 100)
+        print(' Recall Score of SVM : ', recall_score(Y_test, sv_pred) * 100)
+        # print(' F1 Score of SVM : ',f1_score(Y_test,sv_pred)*100)
+
+        # print('Classification Report on SVM',classification_report(Y_test,sv_pred,digits=4))
         print('Confusion Matric : ',cm_svm)
 
         print('Confusion Matrix of SVM ')
@@ -279,7 +287,7 @@ def predict():
         for i in range(2):
             for j in range(2):
                 plt.text(j, i, str(s[i][j]) + " = " + str(cm_svm[i][j]))
-        confusionMatrix = 'static/plots/histogram.png'
+        confusionMatrix = 'static/plots/confusionMatrix.png'
         plt.savefig(confusionMatrix)
         # plt.show()
 

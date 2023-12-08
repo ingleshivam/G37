@@ -16,5 +16,9 @@ def evaluate_model(classifier, X_train, Y_train, X_test, Y_test):
     test_data_accuracy = accuracy_score(X_test_prediction, Y_test)
 
     cm_svm = confusion_matrix(Y_test, X_test_prediction)
+
+    # train_accuracy_svm =classifier.score(X_train,Y_train)
+    # accuracyTest_score_svm =classifier.score(X_test,Y_test)
+
     return training_data_accuracy, test_data_accuracy,cm_svm,X_test_prediction
 
