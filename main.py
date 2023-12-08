@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 from sklearn.metrics import precision_score,recall_score,f1_score,classification_report
-
+import secrets
 cluster = MongoClient("mongodb+srv://root:root@cluster0.mngotjl.mongodb.net/?retryWrites=true&w=majority",connect=False)
 
 if cluster:
@@ -53,7 +53,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
-otp =  randint(0000,9999)
+otp =  str(secrets.randbelow(10**6)).zfill(6)
 
 @app.route('/')
 def index():
@@ -133,12 +133,7 @@ def register():
 
             # validate(username,hashed_password,name,email,mob,gender)
             return render_template("verify.html")
-
-        # Perform registration logic here (e.g., store user information in a database)
-
-        # After successful registration, you can redirect the user to the login page.
         return redirect(url_for('index'))
-
     return render_template('register.html')
 
 @app.route('/home', methods=['GET', 'POST'])
@@ -164,13 +159,13 @@ def validate():
     gender = session.get('gender', None)
 
     userOtp = request.form['otp']
-    if otp==int(userOtp):
+    if otp==userOtp:
         post = {"username": username, "password": hashed_password,"name":name,"email":email,"mob":mob,"gender":gender}
         collection.insert_one(post)
         print(username, hashed_password, name, email, mob, gender)
         return render_template("success.html")
     else:
-        return render_template("register.html")
+        return redirect('register')
 
 @app.route('/aboutUs')
 @login_required
