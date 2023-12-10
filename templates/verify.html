@@ -13,7 +13,7 @@
    <main class="cd__main glass-morphism">
       <div id='card' class="animated fadeIn">
          <div id='upper-side'>
-            <p class="text-danger">{{msg}}</p>
+<!--            <p class="text-danger">{{msg}}</p>-->
             <h3 id='status'>
                One-time password has been sent to your email. Please check your email for the verification
             </h3>
@@ -30,17 +30,18 @@
                 <input type="text" name="gender" value="{{gender}}"style="display:none;">
 
                <button type="submit" class="btn  mb-2"style="background-color:#8bc34a;color:white;">Submit</button>
+                <p class="text-center text-danger">{{msg}}</p>
             </form>
          </div>
       </div>
    </main>
 
-<script>
-    function preventBack() {
-        window.history.forward();
-    }
-    setTimeout("preventBack()", 0);
-    window.onunload = function () { null };
-</script>
+<!--<script>-->
+<!--    function preventBack() {-->
+<!--        window.history.forward();-->
+<!--    }-->
+<!--    setTimeout("preventBack()", 0);-->
+<!--    window.onunload = function () { null };-->
+<!--</script>-->
 </body>
 </html>

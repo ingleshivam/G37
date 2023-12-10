@@ -5,11 +5,11 @@
     border-radius: 50%;
     color: rgba(121, 121, 121, .8);
     display: inline-block;
-    height: 30px;
+    height: 29px;
+    width: 29px;
     line-height: 27px;
     border: 2px solid rgba(121, 121, 121, .5);
     text-align: center;
-    width: 30px;
 }
 
 .social-links a:hover {

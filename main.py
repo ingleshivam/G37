@@ -2,7 +2,7 @@ import json
 from flask import Flask, render_template, request, redirect,session, url_for
 import bcrypt
 from flask_mail import *
-from random import randint
+import random
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from pymongo import MongoClient, collection
 import matplotlib.pyplot as plt
@@ -54,7 +54,8 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 otp =  str(secrets.randbelow(10**6)).zfill(6)
-
+R_id = 'DR' + str(random.randint(10000, 99999))
+print(R_id)
 @app.route('/')
 def index():
 	return render_template('login.html')
@@ -66,10 +67,13 @@ def login():
 
         user = db.users.find_one({'username': username})
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password']):
+            user_id =user['R_id']
+            print(user_id)
             session['s_username'] = username
+            session['s_id'] = user_id
             user_obj=User(username=user.get('username'))
             login_user(user_obj )
-            return render_template('/home.html',s_username=username)
+            return render_template('/home.html',s_username=username,s_id = user_id)
             # return redirect(url_for('home'))
         else:
             return render_template('/login.html',msg="Password or Username is Incorrect.")
@@ -85,25 +89,22 @@ def login():
 # -----------------------------------------------------------------------------------------------------------------------
 #     return render_template('login.html')
 
-def user_exists(email): #username
-    # Query the collection for a document with the given name and mobile_number
-    query = {"email" :email} #"username": username,
-    result = db.users.find_one(query)
-    # If result is not None, a matching document exists
-    return result is not None
+def user_exists(email, mob, username):
+    search_values = {"username": username, "email": email, "mob": mob}
+    all_documents = collection.find()
+    for document in all_documents:
+        if any(document.get(key) == value for key, value in search_values.items()):
+            print("Found a matching document:")
+            print(document)
+            return True  # User exists
+    print("User not found.")
+    return False  # User does not exist
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     display = ""
     if request.method == 'POST':
-        # Handle the registration form submission here
-        # def user_exists(username):
-        #     # Query the collection for a document with the given name and mobile_number
-        #     query = {"username": username}
-        #     result = collection.find_one(query)
-        #     # If result is not None, a matching document exists
-        #     return result is not None
-
         username = request.form['username']
         password = request.form['password']
         name = request.form['name']
@@ -112,15 +113,15 @@ def register():
         gender = request.form['gender']
 
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        # print(username,password,name,email,mob,gender)
 
-        if user_exists(email): #username,
+        if user_exists(email,mob,username): #username,
             # print(f"User with name '{username}' and mobile number '{mob}' already exists.")
             display ="block"
             return render_template("register.html",block=display)
         else:
             # post = {"username": username, "password": hashed_password,"name":name,"email":email,"mob":mob,"gender":gender}
             # collection.insert_one(post)
+
             msg= Message('OTP',sender='g37.dypcet@gmail.com',recipients=[email])
             msg.body=str(otp)
             mail.send(msg)
@@ -131,20 +132,21 @@ def register():
             session['mob'] = mob
             session['gender'] = gender
 
-            # validate(username,hashed_password,name,email,mob,gender)
+            # return redirect('index')
             return render_template("verify.html")
-        return redirect(url_for('index'))
-    return render_template('register.html')
+    else:
+        return render_template('register.html')
 
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
     s_username = session.get('s_username', 'User')
+    s_id = session.get('s_id','DR')
     if request.method == 'POST':
         uploadedFile = request.files['uploadFile']
         file_path = f'content/{uploadedFile.filename}'
         uploadedFile.save(file_path)
-    return render_template('home.html',s_username=s_username)
+    return render_template('home.html',s_username=s_username,s_id=s_id)
 
 @app.route('/email',methods = ['GET','POST'])
 def email():
@@ -160,18 +162,20 @@ def validate():
 
     userOtp = request.form['otp']
     if otp==userOtp:
-        post = {"username": username, "password": hashed_password,"name":name,"email":email,"mob":mob,"gender":gender}
+        post = {"username": username, "password": hashed_password,"name":name,"email":email,"mob":mob,"gender":gender,"R_id":R_id}
         collection.insert_one(post)
-        print(username, hashed_password, name, email, mob, gender)
+        print(username, hashed_password, name, email, mob, gender,R_id)
         return render_template("success.html")
     else:
-        return redirect('register')
+        return render_template('verify.html',msg="Invalid OTP")
 
 @app.route('/aboutUs')
 @login_required
 def aboutUs():
     s_username = session.get('s_username','User')
-    return render_template('aboutUs.html',s_username=s_username)
+    s_id = session.get('s_id','DR')
+    print(s_id)
+    return render_template('aboutUs.html',s_username=s_username,s_id=s_id)
 
 @app.route('/predict',methods=['GET', 'POST'])
 @login_required

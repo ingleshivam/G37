@@ -16,17 +16,17 @@
 <body>
 <div class="glass-morphism">
 <section class="ftco-section">
-    <div class="alert alert-danger" id="show"role="alert" style="display:{{block}};width:79%;margin-left:auto; margin-right:auto;">
-      The user already exists.
-    </div>
     <div class="container"class="glass-morphism">
-        <div class="row card p-4 justify-content-center">
+            <div class="alert alert-danger mx-auto" id="show"role="alert" style="display:{{block}};">
+      THE USER ALREADY EXISTS !
+    </div>
+        <div class="row card p-4 justify-content-center mx-auto">
             <h2>Register</h2>
             <form action="{{ url_for('register') }}" method="post" class="signin-form">
                 <div class="row">
                     <div class="col">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required>
+                        <input type="text" id="name" pattern = "[A-Za-z _]+" title="Only letters are allowed" name="name" class="form-control" placeholder="Name" required>
                     </div>
                     <div class="col">
                         <label for="email" class="form-label">Email</label>
@@ -64,7 +64,7 @@
                         <button type="submit" class="form-control btn btn-primary rounded submit px-3">Register</button>
                     </div>
                 </div>
-                Already Registererd ? Click here to <a href="{{ url_for('index') }}">Login</a>
+                <p class="text-right mt-3">Already Registererd ? Click here to <a href="{{ url_for('index') }}">Login</a></p>
             </form>
         </div>
     </div>
@@ -74,13 +74,13 @@
 <script src="static/js/popper.js"></script>
 <script src="static/js/bootstrap.min.js"></script>
 <script src="static/js/main.js"></script>
-<script>
-function preventBack() {
-    window.history.forward();
-}
-setTimeout("preventBack()", 0);
-window.onunload = function () { null };
-</script>
+<!--<script>-->
+<!--function preventBack() {-->
+<!--    window.history.forward();-->
+<!--}-->
+<!--setTimeout("preventBack()", 0);-->
+<!--window.onunload = function () { null };-->
+<!--</script>-->
 </body>
 </html>
 
