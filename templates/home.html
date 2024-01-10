@@ -9,10 +9,16 @@
     <link rel="stylesheet" href="static/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="static/assets/css/style.css">
     <link rel="stylesheet" href="static/assets/css/home.css">
+    <link rel="stylesheet" href="static/assets/css/loader.css">
   </head>
   <body>
+
     <div class="container-scroller">
+
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div id="overlay">
+          <span class="loader"></span>
+        </div>
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <a class="navbar-brand brand-logo"style="color:#b66dff;" href="/home"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
           <a class="navbar-brand brand-logo-mini"style="color:#b66dff;" href="/home"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
@@ -107,7 +113,7 @@
                           </div>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+                      <button type="submit" onclick="loader()" class="btn btn-gradient-primary me-2">Submit</button>
                     </form>
                   </div>
                 </div>
@@ -123,6 +129,7 @@
                         <button class="btn btn-outline-primary" type="submit" id="uplaodBtn">Upload</button>
                       </div>
                         <small class="text-info">Accepts only .csv file !</small>
+                        <p id="result"></p>
                     </form>
                   </div>
                 </div>
@@ -149,5 +156,22 @@
 <!--    setTimeout("preventBack()", 0);-->
 <!--    window.onunload = function () { null };-->
 <!--    </script>-->
+  <script>
+    function loader() {
+        let glevel = document.getElementById('glevel').value;
+        let insulin = document.getElementById('insulin').value;
+        let bmi = document.getElementById('bmi').value;
+        let dob = document.getElementById('dob').value;
+        let age = document.getElementById('age').value;
+
+        if (glevel === "" || insulin === "" || bmi === "" || dob === "" || age === "") {
+            return false;
+        } else {
+            document.getElementById('overlay').style.display = "flex";
+            return true;
+        }
+    }
+
+  </script>
   </body>
 </html>

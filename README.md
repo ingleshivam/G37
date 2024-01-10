@@ -3,7 +3,6 @@
 
 - **[08/12/23]:**
   - **Changes Made**
-    - Implemented feature X.
     - The Online CSS CDN is converted into CSS files.
     - Remove unnecessary files, such as videos, from the homepage and about us page.
     - Integrate a date of birth picker to calculate age automatically.
@@ -17,6 +16,9 @@
     - Users can now register with unique registration IDs.
     - Registration IDs are stored securely in the database for easy retrieval.
 - **[10/12/23]:**
-  - Changes Made
     - Working....
+- **[12/12/2023]**
+  - **New Work Done**
+    - "Added a loader to indicate ongoing processing before submitting data for prediction.
+    - 
 - ...

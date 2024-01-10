@@ -66,13 +66,14 @@ def login():
         password = request.form['password']
 
         user = db.users.find_one({'username': username})
+        print(user)
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password']):
             user_id =user['R_id']
             print(user_id)
             session['s_username'] = username
             session['s_id'] = user_id
             user_obj=User(username=user.get('username'))
-            login_user(user_obj )
+            login_user(user_obj)
             return render_template('/home.html',s_username=username,s_id = user_id)
             # return redirect(url_for('home'))
         else:
