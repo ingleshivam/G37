@@ -15,60 +15,115 @@
 </head>
 <body>
 <div class="glass-morphism">
-<section class="ftco-section">
-    <div class="container"class="glass-morphism">
+    <section class="ftco-section">
+        <div class="container"class="glass-morphism">
             <div class="alert alert-danger mx-auto" id="show"role="alert" style="display:{{block}};">
-      THE USER ALREADY EXISTS !
-    </div>
-        <div class="row card p-4 justify-content-center mx-auto">
-            <h2>Register</h2>
-            <form action="{{ url_for('register') }}" method="post" class="signin-form">
-                <div class="row">
-                    <div class="col">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" pattern = "[A-Za-z _]+" title="Only letters are allowed" name="name" class="form-control" placeholder="Name" required>
-                    </div>
-                    <div class="col">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
-                    </div>
-                </div>
+              THE USER ALREADY EXISTS !
+            </div>
 
-                <div class="row mt-3">
-                    <div class="col">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" id="username" class="form-control" name="username" placeholder="Username"required>
-                    </div>
-                    <div class="col">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                    </div>
-                </div>
+            <div class="row col-10 mx-auto mb-1"style="background-color:#fff;padding:10px; border-radius:5px;">
+                <button type="" class="btn btn-primary"style="width:49%;"onclick="toggleRegister('doctor')"id="btnDr">Doctor</button>
+                <button type="" class="btn btn-outline-primary ml-auto"style="width:49%;"onclick="toggleRegister('patient')"id="btnPatient">Patient</button>
+            </div>
 
-                <div class="row mt-3">
-                    <div class="col">
-                        <label for="mob" class="form-label">Mobile No.</label>
-                        <input type="tel" id="mob" pattern="[0-9]{10}" class="form-control" name="mob" placeholder="Mobile No." required>
+            <!--  Doctor Regisgration Form           -->
+            <div id="doctor" class="row col-10 card p-4 justify-content-center mx-auto"style="display:block;">
+                <h3>Doctor's Registration</h3>
+                <form action="{{ url_for('register') }}" method="post" class="signin-form">
+                    <div class="row">
+                        <div class="col">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" pattern = "[A-Za-z _]+" title="Only letters are allowed" name="name" class="form-control" placeholder="Name" required>
+                        </div>
+                        <div class="col">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                        </div>
                     </div>
-                    <div class="col">
-                        <label for="gender" class="form-label">Gender</label>
-                        <select class="form-control" id="gender" name="gender" required>
-                          <option>Male</option>
-                          <option>Female</option>
-                        </select>
-                    </div>
-                </div>
 
-                <div class="row mt-3">
-                    <div class="col">
-                        <button type="submit" class="form-control btn btn-primary rounded submit px-3">Register</button>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" id="username" class="form-control" name="username" placeholder="Username"required>
+                        </div>
+                        <div class="col">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        </div>
                     </div>
-                </div>
-                <p class="text-right mt-3">Already Registererd ? Click here to <a href="{{ url_for('index') }}">Login</a></p>
-            </form>
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <label for="mob" class="form-label">Mobile No.</label>
+                            <input type="tel" id="mob" pattern="[0-9]{10}" class="form-control" name="mob" placeholder="Mobile No." required>
+                        </div>
+                        <div class="col">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-control" id="gender" name="gender" required>
+                              <option>Male</option>
+                              <option>Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <button type="submit" class="form-control btn btn-primary rounded submit px-3">Register</button>
+                        </div>
+                    </div>
+                    <p class="text-right mt-3">Already Registererd ? Click here to <a href="{{ url_for('index') }}">Login</a></p>
+                </form>
+            </div>
+            <!-- Patient Registration Form           -->
+            <div id="patient" class="row col-10 card p-4 justify-content-center mx-auto"style="display:none;">
+                <h3>Patient's Registration</h3>
+                <form action="{{ url_for('register') }}" method="post" class="signin-form">
+                    <div class="row">
+                        <div class="col">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" pattern = "[A-Za-z _]+" title="Only letters are allowed" name="name" class="form-control" placeholder="Name" required>
+                        </div>
+                        <div class="col">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" id="username" class="form-control" name="username" placeholder="Username"required>
+                        </div>
+                        <div class="col">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <label for="mob" class="form-label">Mobile No.</label>
+                            <input type="tel" id="mob" pattern="[0-9]{10}" class="form-control" name="mob" placeholder="Mobile No." required>
+                        </div>
+                        <div class="col">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-control" id="gender" name="gender" required>
+                              <option>Male</option>
+                              <option>Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <button type="submit" class="form-control btn btn-primary rounded submit px-3">Register</button>
+                        </div>
+                    </div>
+                    <p class="text-right mt-3">Already Registererd ? Click here to <a href="{{ url_for('index') }}">Login</a></p>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 </div>
 <script src="static/js/jquery.min.js"></script>
 <script src="static/js/popper.js"></script>
@@ -81,6 +136,28 @@
 <!--setTimeout("preventBack()", 0);-->
 <!--window.onunload = function () { null };-->
 <!--</script>-->
+<script>
+    function toggleRegister(userType) {
+        if (userType === 'doctor') {
+            document.getElementById('doctor').style.display = 'block';
+            document.getElementById('patient').style.display = 'none';
+
+            document.getElementById('btnDr').classList.remove('btn-outline-primary');
+            document.getElementById('btnDr').classList.add('btn-primary');
+            document.getElementById('btnPatient').classList.remove('btn-primary');
+            document.getElementById('btnPatient').classList.add('btn-outline-primary');
+        } else if (userType === 'patient') {
+            document.getElementById('doctor').style.display = 'none';
+            document.getElementById('patient').style.display = 'block';
+
+            document.getElementById('btnDr').classList.remove('btn-primary');
+            document.getElementById('btnDr').classList.add('btn-outline-primary');
+            document.getElementById('btnPatient').classList.remove('btn-outline-primary');
+            document.getElementById('btnPatient').classList.add('btn-primary');
+
+        }
+    }
+</script>
 </body>
 </html>
 

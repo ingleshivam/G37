@@ -11,7 +11,8 @@
     <div class="container"class="glass-morphism">
         <div class="row justify-content-center">
             <div class="col-md-12 col-lg-10">
-                <div class="wrap d-md-flex">
+                <!--  Doctors Login Form -->
+                <div class="wrap d-md-flex" id="doctor">
                     <div class="col-md-6"style="display: flex;justify-content: center;align-items: center;height: auto;">
                       <video id="background-video" autoplay loop muted poster="static/images/dpp.png"width="100%" style="max-width: 100%;pointer-events: none;">
                       <source src="static/images/db_prediction.mp4" type="video/mp4">
@@ -20,7 +21,7 @@
                     <div class="login-wrap p-4 p-md-5">
                         <div class="d-flex">
                             <div class="w-100">
-                                <h3 class="mb-4">Sign In</h3>
+                                <h4 class="mb-4">Doctor's Login</h4>
                             </div>
                             <div class="w-100">
                                 <p class="social-media d-flex justify-content-end">
@@ -29,6 +30,12 @@
                                 </p>
                             </div>
                         </div>
+
+                        <div class="row mb-1">
+                            <button type="" class="btn btn-primary"style="width:49%;"onclick="toggleLogin('doctor')">Doctor</button>
+                            <button type="" class="btn btn-outline-primary ml-auto"style="width:49%;"onclick="toggleLogin('patient')">Patient</button>
+                        </div>
+
                         <form action="{{ url_for('login') }}" method="post"class="signin-form">
                             <div class="form-group mb-3">
                                 <label class="label" for="username">Username</label>
@@ -55,7 +62,65 @@
                                 </div>
                             </div>
                         </form>
-                        <p class="text-center">Not a member? <a data-toggle="tab" href="/register">Sign Up</a></p>
+                        <div class=""style="line-height:1;">
+                            <p class="text-center lh-1">Not a member? <a data-toggle="tab" href="/register">Sign Up</a></p>
+                        </div>
+                    </div>
+                </div>
+                <!--  Patient Login Form -->
+                <div class="wrap d-md-none" id="patient">
+                    <div class="col-md-6"style="display: flex;justify-content: center;align-items: center;height: auto;">
+                      <video id="background-video" autoplay loop muted poster="static/images/dpp.png"width="100%" style="max-width: 100%;pointer-events: none;">
+                      <source src="static/images/db_prediction.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="login-wrap p-4 p-md-5">
+                        <div class="d-flex">
+                            <div class="w-100">
+                                <h4 class="mb-4">Patient's Login</h4>
+                            </div>
+                            <div class="w-100">
+                                <p class="social-media d-flex justify-content-end">
+                                    <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="mdi mdi-facebook"></span></a>
+                                    <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="mdi mdi-twitter"></span></a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <button type="" class="btn btn-outline-primary"style="width:49%;"onclick="toggleLogin('doctor')">Doctor</button>
+                            <button type="" class="btn btn-primary ml-auto"style="width:49%;"onclick="toggleLogin('patient')">Patient</button>
+                        </div>
+
+                        <form action="{{ url_for('login') }}" method="post"class="signin-form">
+                            <div class="form-group mb-3">
+                                <label class="label" for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="label" for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                            </div>
+                            <p class="text-danger">{{msg}}</p>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In
+                                </button>
+                            </div>
+                            <div class="form-group d-md-flex">
+                                <div class="w-50 text-left">
+                                    <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="w-50 text-md-right">
+                                    <a href="/email">Forgot Password</a>
+                                </div>
+                            </div>
+                        </form>
+                        <div class=""style="line-height:1;">
+                            <p class="text-center lh-1">Not a member? <a data-toggle="tab" href="/register">Sign Up</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,6 +145,25 @@
 <!--setTimeout("preventBack()", 0);-->
 <!--window.onunload = function () { null };-->
 <!--</script>-->
+
+<script>
+    function toggleLogin(userType) {
+        if (userType === 'doctor') {
+            document.getElementById('doctor').classList.remove('d-md-none');
+            document.getElementById('doctor').classList.add('d-md-flex');
+
+            document.getElementById('patient').classList.remove('d-md-flex');
+            document.getElementById('patient').classList.add('d-md-none');
+        } else if (userType === 'patient') {
+            document.getElementById('doctor').classList.remove('d-md-flex');
+            document.getElementById('doctor').classList.add('d-md-none');
+
+            document.getElementById('patient').classList.remove('d-md-none');
+            document.getElementById('patient').classList.add('d-md-flex');
+        }
+    }
+</script>
+
 </body>
 </html>
 

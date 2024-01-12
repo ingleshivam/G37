@@ -152,6 +152,12 @@ def home():
 @app.route('/email',methods = ['GET','POST'])
 def email():
     return render_template('email.html')
+
+@app.route('/forgotPass',methods = ['GET','POST'])
+def forgotPass():
+    return render_template('email.html')
+
+
 @app.route('/validate',methods=['GET', 'POST'])
 def validate():
     username = session.get('username',None)

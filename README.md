@@ -19,6 +19,10 @@
     - Working....
 - **[12/12/2023]**
   - **New Work Done**
-    - "Added a loader to indicate ongoing processing before submitting data for prediction.
-    - 
+    - Added a loader to indicate ongoing processing before submitting data for prediction.
+- **[12/01/2024]**
+  - **New Work Done**
+    - Created separate login and registration pages for Doctors and Patients.
+  - **Changes Made**
+    - Added a clear button to the Diabetic Predictor form for one-click form clearing.
 - ...
