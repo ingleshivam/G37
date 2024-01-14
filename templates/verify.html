@@ -19,15 +19,15 @@
             </h3>
          </div>
          <div id='lower-side'>
-            <form class="form-inline" action="/validate" method="post">
+            <form class="form-inline" action="/validatePatientInfo" method="post">
                <input type="text" name="otp"class="form-control mb-4 mr-sm-2" placeholder="OTP" required>
 
-<!--                <input type="text" name="username" value="{{username}}"style="display:none;">-->
-<!--                <input type="text" name="hashed_password" value="{{hashed_password}}"style="display:none;">-->
-<!--                <input type="text" name="name" value="{{name}}"style="display:none;">-->
-<!--                <input type="text" name="email" value="{{email}}"style="display:none;">-->
-<!--                <input type="text" name="mob" value="{{mob}}"style="display:none;">-->
-<!--                <input type="text" name="gender" value="{{gender}}"style="display:none;">-->
+                <input type="text" name="username" value="{{username}}"style="display:none;">
+                <input type="text" name="hashed_password" value="{{hashed_password}}"style="display:none;">
+                <input type="text" name="name" value="{{name}}"style="display:none;">
+                <input type="text" name="email" value="{{email}}"style="display:none;">
+                <input type="text" name="mob" value="{{mob}}"style="display:none;">
+                <input type="text" name="gender" value="{{gender}}"style="display:none;">
 
                <button type="submit" class="btn  mb-2"style="background-color:#8bc34a;color:white;">Submit</button>
                 <p class="text-center text-danger">{{msg}}</p>

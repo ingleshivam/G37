@@ -1,7 +1,7 @@
 import json
 from flask import Flask, render_template, request, redirect,session, url_for
 import bcrypt
-from flask_mail import *
+from flask_mail import Mail,Message
 import random
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from pymongo import MongoClient, collection
@@ -17,6 +17,7 @@ if cluster:
 
 db=cluster["registrationInfo"]
 collection = db["users"]
+collection2 = db['patients']
 # post = {"_id":0,"name":"shivam"}
 # collection.insert_one(post)
 
@@ -52,9 +53,11 @@ app.config['MAIL_PASSWORD'] = params['gmail-password']
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
+mail1 = Mail(app)
 
 otp =  str(secrets.randbelow(10**6)).zfill(6)
 R_id = 'DR' + str(random.randint(10000, 99999))
+Patient_Id = 'P' + str(random.randint(10000, 99999))
 print(R_id)
 @app.route('/')
 def index():
@@ -80,16 +83,43 @@ def login():
             return render_template('/login.html',msg="Password or Username is Incorrect.")
     else:
         return render_template('login.html')
-    #
-    # print(usernmae)
-    # print(password)
-    #
-    # main.py
-    # --------------------------------------------------------------------------------------------------------------------------
 
-# -----------------------------------------------------------------------------------------------------------------------
-#     return render_template('login.html')
+@app.route('/loginPatient', methods=['GET', 'POST'])
+def loginPatient():
+    if request.method == 'POST':
+        p_username = request.form['p_username']
+        p_password = request.form['p_password']
 
+        user = collection2.find_one({'p_username': p_username})
+        print(user)
+        if user and bcrypt.checkpw(p_password.encode('utf-8'), user['p_password']):
+            P_id =user['Patient_ID']
+            print(P_id)
+            session['p_username'] = p_username
+            session['p_id'] = P_id
+            user_obj=User(username=user.get('p_username'))
+            login_user(user_obj)
+            return render_template('/patientHome.html',p_username=p_username,P_id = P_id)
+            # return redirect(url_for('home'))
+        else:
+            return render_template('/login.html',msg="Password or Username is Incorrect.")
+    else:
+        return render_template('login.html')
+
+@app.route('/patientHome', methods=['GET', 'POST'])
+def patinetHome():
+    if request.method == 'POST':
+        glevel = request.form['glevel']
+        insulin = request.form['insulin']
+        bmi = request.form['bmi']
+        dob = request.form['dob']
+        age = request.form['age']
+        formattedDate =  request.form['FDate']
+        print(glevel,insulin,bmi,dob,age)
+        print(formattedDate)
+        p_username = session.get('p_username', 'PUsername')
+        P_id = session.get('p_id', 'PatinetID')
+        return render_template('patientHome.html',p_username=p_username, P_id = P_id)
 def user_exists(email, mob, username):
     search_values = {"username": username, "email": email, "mob": mob}
     all_documents = collection.find()
@@ -100,7 +130,16 @@ def user_exists(email, mob, username):
             return True  # User exists
     print("User not found.")
     return False  # User does not exist
-
+def patient_exists(email, mob, username):
+    patient_search_values = {"p_username": username, "p_email": email, "p_mob": mob}
+    patient_all_documents = collection2.find()
+    for p_document in patient_all_documents:
+        if any(p_document.get(key) == value for key, value in patient_search_values.items()):
+            print("Found a matching document:")
+            print(p_document)
+            return True  # User exists
+    print("User not found.")
+    return False  # User does not exist
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -138,6 +177,43 @@ def register():
     else:
         return render_template('register.html')
 
+@app.route('/patientRegister', methods=['GET', 'POST'])
+def patientRegister():
+    display = ""
+    if request.method == 'POST':
+        p_username = request.form['p_username']
+        p_password = request.form['p_password']
+        p_name = request.form['p_name']
+        p_email = request.form['p_email']
+        p_mob = request.form['p_mob']
+        p_gender = request.form['p_gender']
+
+        print(p_username,p_password,p_name,p_email,p_mob,p_gender)
+
+        p_hashed_password = bcrypt.hashpw(p_password.encode('utf-8'), bcrypt.gensalt())
+
+        if patient_exists(p_email,p_mob,p_username): #username,
+            # print(f"User with name '{username}' and mobile number '{mob}' already exists.")
+            display ="block"
+            return render_template("register.html",block=display)
+        else:
+            # post = {"username": username, "password": hashed_password,"name":name,"email":email,"mob":mob,"gender":gender}
+            # collection.insert_one(post)
+
+            send_msg= Message('OTP',sender='g37.dypcet@gmail.com',recipients=[p_email])
+            send_msg.body=str(otp)
+            mail.send(send_msg)
+            session['p_username'] = p_username
+            session['p_hashed_password'] = p_hashed_password
+            session['p_name'] = p_name
+            session['p_email'] = p_email
+            session['p_mob'] = p_mob
+            session['p_gender'] = p_gender
+
+            # return redirect('index')
+            return render_template("verify.html")
+    else:
+        return render_template('register.html')
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
@@ -157,6 +233,23 @@ def email():
 def forgotPass():
     return render_template('email.html')
 
+@app.route('/validatePatientInfo',methods=['GET','POST'])
+def validatePatientInfo():
+    p_username = session.get('p_username',None)
+    p_hashed_password = session.get('p_hashed_password', None)
+    p_name = session.get('p_name', None)
+    p_email = session.get('p_email', None)
+    p_mob = session.get('p_mob', None)
+    p_gender = session.get('p_gender', None)
+
+    userOtp = request.form['otp']
+    if otp==userOtp:
+        post = {"p_username": p_username, "p_password": p_hashed_password,"p_name":p_name,"p_email":p_email,"p_mob":p_mob,"p_gender":p_gender,"Patient_ID":Patient_Id}
+        collection2.insert_one(post)
+        print(p_username, p_hashed_password, p_name, p_email, p_mob, p_gender,Patient_Id)
+        return render_template("success.html")
+    else:
+        return render_template('verify.html',msg="Invalid OTP")
 
 @app.route('/validate',methods=['GET', 'POST'])
 def validate():

@@ -25,4 +25,8 @@
     - Created separate login and registration pages for Doctors and Patients.
   - **Changes Made**
     - Added a clear button to the Diabetic Predictor form for one-click form clearing.
+- **[13/01/2024]**
+  - **New Work Done**
+    - Successfully linked the created patient login and patient registration forms to the database
+    - Created a Home page to display patient info.
 - ...
