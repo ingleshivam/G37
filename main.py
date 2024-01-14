@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, request, redirect,session, url_for
+from flask import Flask, render_template, request, redirect,session, url_for, jsonify
 import bcrypt
 from flask_mail import Mail,Message
 import random
@@ -91,15 +91,19 @@ def loginPatient():
         p_password = request.form['p_password']
 
         user = collection2.find_one({'p_username': p_username})
+        user1 = collection2.find_one({'p_username': p_username}, {'_id': False})
         print(user)
+        print(user1)
         if user and bcrypt.checkpw(p_password.encode('utf-8'), user['p_password']):
             P_id =user['Patient_ID']
             print(P_id)
             session['p_username'] = p_username
             session['p_id'] = P_id
+            session['user'] = user1
             user_obj=User(username=user.get('p_username'))
             login_user(user_obj)
-            return render_template('/patientHome.html',p_username=p_username,P_id = P_id)
+
+            return render_template('/patientHome.html',p_username=p_username,P_id = P_id,patient=user1)
             # return redirect(url_for('home'))
         else:
             return render_template('/login.html',msg="Password or Username is Incorrect.")
@@ -109,17 +113,23 @@ def loginPatient():
 @app.route('/patientHome', methods=['GET', 'POST'])
 def patinetHome():
     if request.method == 'POST':
-        glevel = request.form['glevel']
-        insulin = request.form['insulin']
-        bmi = request.form['bmi']
+        name = request.form['name']
+        # email = request.form['email']
+        # mob = request.form['mob']
+        gender = request.form['gender']
         dob = request.form['dob']
-        age = request.form['age']
-        formattedDate =  request.form['FDate']
-        print(glevel,insulin,bmi,dob,age)
-        print(formattedDate)
+        fdate = request.form['FDate']
+        addrss = request.form['address']
+        city = request.form['city']
+        zip = request.form['zip']
+        state = request.form['state']
+
+        print(name,gender,fdate,addrss,city,zip,state)
+
         p_username = session.get('p_username', 'PUsername')
         P_id = session.get('p_id', 'PatinetID')
-        return render_template('patientHome.html',p_username=p_username, P_id = P_id)
+        user = session.get('user','Patient_Info')
+        return render_template('patientHome.html',p_username=p_username, P_id = P_id,patient=user)
 def user_exists(email, mob, username):
     search_values = {"username": username, "email": email, "mob": mob}
     all_documents = collection.find()

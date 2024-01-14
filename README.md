@@ -29,4 +29,7 @@
   - **New Work Done**
     - Successfully linked the created patient login and patient registration forms to the database
     - Created a Home page to display patient info.
+- **[14/01/2024]**
+  - **New Work Done**
+    - Created update profile functionality for patients.
 - ...

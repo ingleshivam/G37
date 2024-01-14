@@ -53,13 +53,6 @@
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
               </a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#">
-                <span class="menu-title">Home</span>
-                <i class="mdi mdi-home menu-icon"></i>
-              </a>
-            </li>
-
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#collapseExample"role="button" aria-expanded="false" aria-controls="collapseExample">
                 <span class="menu-title">Profile</span>
@@ -71,25 +64,42 @@
 
         <div class="main-panel">
           <div class="content-wrapper">
-            <div class="row collapse" id="collapseExample">
-              <div class="col-6 grid-margin">
+            <div class="row collapse show" id="collapseExample">
+              <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
                     <div class="card-title">
                       <p id="para"></p>
                     <form action="/patientHome"method="post">
                       <div class="form-group">
-                        <label for="glevel">Glucose Level</label>
-                        <input type="number" class="form-control" id="glevel" name="glevel" placeholder="Glucose Level" min="0"required>
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name"required>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="email">E-Mail</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="E-Mail" value="{{ patient.p_email }}"required disabled>
+                          </div>
+                        </div>
                       </div>
+
                       <div class="form-group">
-                        <label for="insulin">Insulin</label>
-                        <input type="number" class="form-control" id="insulin" name="insulin" placeholder="Insulin"min="0" required>
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="mob">Mobile Number</label>
+                            <input type="text" class="form-control" id="mob" name="mob" placeholder="Mobile Number" value="{{ patient.p_mob }}"disabled required>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="gender" class="form-label">Gender</label>
+                              <select class="form-control" id="gender" name="gender" required style="height:67%;">
+                                <option>Male</option>
+                                <option>Female</option>
+                              </select>
+                          </div>
+                        </div>
                       </div>
-                      <div class="form-group">
-                        <label for="bmi">BMI</label>
-                        <input type="number" step="0.01" class="form-control" id="bmi" name="bmi" placeholder="BMI" min="0" required>
-                      </div>
+
                       <div class="form-group">
                         <div class="row">
                           <div class="form-group col-6">
@@ -99,12 +109,67 @@
 
                           <div class="form-group col-6">
                               <label for="age">Age</label>
-                              <input type="text" class="form-control" id="age" name="age" placeholder="Age"required>
+                              <input type="text" class="form-control" id="age" name="age" placeholder="Age" disabled required>
                               <input type="text" id="formattedDate"class="d-none"name="FDate"/>
                           </div>
                         </div>
                       </div>
-                      <button type="" onclick="getResult()" class="btn btn-gradient-primary me-2">Submit</button>
+
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="zip">Zip-Code</label>
+                            <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip Code" required>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="state" class="form-label">State</label>
+                              <select class="form-control" id="state" name="state" required style="height:67%;">
+                                <option>Andhra Pradesh</option>
+                                <option>Arunachal Pradesh</option>
+                                <option>Assam</option>
+                                <option>Bihar</option>
+                                <option>Chhattisgarh</option>
+                                <option>Goa</option>
+                                <option>Gujarat</option>
+                                <option>Haryana</option>
+                                <option>Himachal Pradesh</option>
+                                <option>Jharkhand</option>
+                                <option>Karnataka</option>
+                                <option>Kerala</option>
+                                <option>Madhya Pradesh</option>
+                                <option>Maharashtra</option>
+                                <option>Manipur</option>
+                                <option>Meghalaya</option>
+                                <option>Mizoram</option>
+                                <option>Nagaland</option>
+                                <option>Odisha</option>
+                                <option>Punjab</option>
+                                <option>Rajasthan</option>
+                                <option>Sikkim</option>
+                                <option>Tamil Nadu</option>
+                                <option>Telangana</option>
+                                <option>Tripura</option>
+                                <option>Uttar Pradesh</option>
+                                <option>Uttarakhand</option>
+                                <option>West Bengal</option>
+                              </select>
+                          </div>
+                        </div>
+                      </div>
+                      <button type="submit" onclick="getResult()" class="btn btn-gradient-primary me-2">Submit</button>
                       <button type="reset" class="btn btn-gradient-dark">Clear</button>
                     </form>
                   </div>
