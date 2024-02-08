@@ -18,6 +18,7 @@ if cluster:
 db=cluster["registrationInfo"]
 collection = db["users"]
 collection2 = db['patients']
+collection3 = db['appointments']
 # post = {"_id":0,"name":"shivam"}
 # collection.insert_one(post)
 
@@ -110,26 +111,6 @@ def loginPatient():
     else:
         return render_template('login.html')
 
-@app.route('/patientHome', methods=['GET', 'POST'])
-def patinetHome():
-    if request.method == 'POST':
-        name = request.form['name']
-        # email = request.form['email']
-        # mob = request.form['mob']
-        gender = request.form['gender']
-        dob = request.form['dob']
-        fdate = request.form['FDate']
-        addrss = request.form['address']
-        city = request.form['city']
-        zip = request.form['zip']
-        state = request.form['state']
-
-        print(name,gender,fdate,addrss,city,zip,state)
-
-        p_username = session.get('p_username', 'PUsername')
-        P_id = session.get('p_id', 'PatinetID')
-        user = session.get('user','Patient_Info')
-        return render_template('patientHome.html',p_username=p_username, P_id = P_id,patient=user)
 def user_exists(email, mob, username):
     search_values = {"username": username, "email": email, "mob": mob}
     all_documents = collection.find()
@@ -150,7 +131,6 @@ def patient_exists(email, mob, username):
             return True  # User exists
     print("User not found.")
     return False  # User does not exist
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     display = ""
@@ -173,7 +153,7 @@ def register():
             # collection.insert_one(post)
 
             msg= Message('OTP',sender='g37.dypcet@gmail.com',recipients=[email])
-            msg.body=str(otp)
+            msg.body="Your One Time Password Password is : " + str(otp)
             mail.send(msg)
             session['username'] = username
             session['hashed_password'] = hashed_password
@@ -183,7 +163,7 @@ def register():
             session['gender'] = gender
 
             # return redirect('index')
-            return render_template("verify.html")
+            return render_template("verifyDoc.html")
     else:
         return render_template('register.html')
 
@@ -211,7 +191,7 @@ def patientRegister():
             # collection.insert_one(post)
 
             send_msg= Message('OTP',sender='g37.dypcet@gmail.com',recipients=[p_email])
-            send_msg.body=str(otp)
+            send_msg.body="Your One Time Password Password is : "+str(otp)
             mail.send(send_msg)
             session['p_username'] = p_username
             session['p_hashed_password'] = p_hashed_password
@@ -221,9 +201,77 @@ def patientRegister():
             session['p_gender'] = p_gender
 
             # return redirect('index')
-            return render_template("verify.html")
+            return render_template("verifyPatient.html")
     else:
         return render_template('register.html')
+
+@app.route('/patientHome', methods=['GET', 'POST'])
+# @login_required
+def patinetHome():
+    p_username = session.get('p_username', 'PUsername')
+    P_id = session.get('p_id', 'PatinetID')
+    user = session.get('user', 'Patient_Info')
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        # mob = request.form['mob']
+        gender = request.form['gender']
+        dob = request.form['dob']
+        age = request.form['age']
+        fdate = request.form['FDate']
+        addrss = request.form['address']
+        city = request.form['city']
+        zip = request.form['zip']
+        state = request.form['state']
+
+        print(name,gender,fdate,addrss,city,zip,state,age)
+
+        filter_criteria = {"p_email": email}
+
+        update_operation = {
+            "$set": {
+                "p_name": name,
+                "p_gender": gender,
+                "p_address": addrss,
+                "p_dob": dob,
+                "p_city" : city,
+                "p_zip" : zip,
+                "p_state" : state,
+                "p_age" :age
+            }
+        }
+
+        collection2.update_one(filter_criteria,update_operation)
+
+        p_username = session.get('p_username', 'PUsername')
+        P_id = session.get('p_id', 'PatinetID')
+        user = session.get('user','Patient_Info')
+        return render_template('patientHome.html',p_username=p_username, P_id = P_id,patient=user)
+    else:
+        return render_template('patientHome.html', p_username=p_username, P_id=P_id, patient=user)
+
+@app.route('/appointments',methods=['GET','POST'])
+def appointments():
+    if request.method =="POST":
+        patient_reason = request.form['patient_reason'];
+        patient_name = request.form['patient_name'];
+        patient_email = request.form['patient_email'];
+        patient_phone = request.form['patient_phone'];
+        patient_date = request.form['patient_date'];
+        formatted_date = request.form['appDate'];
+        patient_time = request.form['patient_time'];
+
+        user = session.get('user','Patient_Info')
+
+        post = {"p_reason": patient_reason, "p_name": patient_name,"p_email":patient_email,"p_phone":patient_phone,"p_date":patient_date,"formatted_date":formatted_date,"p_time":patient_time,"p_id":user['Patient_ID'],"status":"Scheduled"}
+        collection3.insert_one(post)
+
+        print(patient_reason,patient_name,patient_email,patient_phone,patient_date,patient_time);
+        p_username = session.get('p_username', 'PUsername')
+        P_id = session.get('p_id', 'PatinetID')
+
+        # Patient id added to databse and schedules added
+        return render_template('patientHome.html',p_username=p_username, P_id = P_id,patient=user)
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
@@ -235,13 +283,57 @@ def home():
         uploadedFile.save(file_path)
     return render_template('home.html',s_username=s_username,s_id=s_id)
 
-@app.route('/email',methods = ['GET','POST'])
-def email():
-    return render_template('email.html')
+def docEmailExits(email):
+    search_values = {"email": email}
+    all_documents = collection.find()
+    for document in all_documents:
+        if any(document.get(key) == value for key, value in search_values.items()):
+            print("Sended Email found in the doc collection")
+            print(document)
+            return True  # User exists
+    print("User not found.")
+    return False
 
-@app.route('/forgotPass',methods = ['GET','POST'])
-def forgotPass():
-    return render_template('email.html')
+def patientEmailExits(email):
+    search_values = {"p_email": email}
+    all_documents = collection2.find()
+    for document in all_documents:
+        if any(document.get(key) == value for key, value in search_values.items()):
+            print("Sended Email found in the patient collection")
+            print(document)
+            return True  # User exists
+    print("User not found.")
+    return False
+@app.route('/docForgotPass',methods = ['GET','POST'])
+def  docForgotPass():
+    if request.method == "POST":
+        doc_email = request.form['doc_email']
+        session['doc_email'] = doc_email
+        if(docEmailExits(doc_email)):
+            msg= Message('OTP',sender='g37.dypcet@gmail.com',recipients=[doc_email])
+            msg.body="Your One Time Password to Forgot Password is : " + str(otp)
+            mail.send(msg)
+            # return redirect('index')
+            return render_template("verifyDocOtp.html")
+        else :
+            return render_template('docForgotPass.html',msg = "Sorry, Email Not Found")
+    return render_template('docForgotPass.html')
+
+@app.route('/patientForgotPass',methods = ['GET','POST'])
+def patientForgotPass():
+    if request.method == "POST":
+        patient_email = request.form['patient_email']
+        session['patient_email'] = patient_email
+        if(patientEmailExits(patient_email)):
+            msg= Message('OTP',sender='g37.dypcet@gmail.com',recipients=[patient_email])
+            msg.body="Your One Time Password to Forgot Password is : " + str(otp)
+            mail.send(msg)
+            # return redirect('index')
+            return render_template("verifyPatientOtp.html")
+        else :
+            return render_template('patientForgotPass.html',msg = "Sorry, Email Not Found")
+    return render_template('patientForgotPass.html')
+
 
 @app.route('/validatePatientInfo',methods=['GET','POST'])
 def validatePatientInfo():
@@ -259,9 +351,9 @@ def validatePatientInfo():
         print(p_username, p_hashed_password, p_name, p_email, p_mob, p_gender,Patient_Id)
         return render_template("success.html")
     else:
-        return render_template('verify.html',msg="Invalid OTP")
+        return render_template('verifyPatient.html',msg="Invalid OTP")
 
-@app.route('/validate',methods=['GET', 'POST'])
+@app.route('/validateDocInfo',methods=['GET', 'POST'])
 def validate():
     username = session.get('username',None)
     hashed_password = session.get('hashed_password', None)
@@ -277,7 +369,60 @@ def validate():
         print(username, hashed_password, name, email, mob, gender,R_id)
         return render_template("success.html")
     else:
-        return render_template('verify.html',msg="Invalid OTP")
+        return render_template('verifyDoc.html',msg="Invalid OTP")\
+
+@app.route('/validateDocOtp',methods=['GET', 'POST'])
+def validateDocOtp():
+    userOtp = request.form['otp']
+    if otp==userOtp:
+        return render_template("changeDocPass.html")
+    else:
+        return render_template('verifyDocOtp.html',msg="Invalid OTP")
+
+@app.route('/validatePatientOtp',methods=['GET', 'POST'])
+def validatePatientOtp():
+    userOtp = request.form['otp']
+    if otp==userOtp:
+        return render_template("changePatientPass.html")
+    else:
+        return render_template('verifyPatientOtp.html',msg="Invalid OTP")
+@app.route('/changeDocPassword',methods=['GET', 'POST'])
+def changeDocPassword():
+    f_pass = request.form['f_pass']
+    c_pass = request.form['c_pass']
+    if f_pass == c_pass:
+        doc_email = session.get('doc_email', None)
+        hashed_password = bcrypt.hashpw(c_pass.encode('utf-8'), bcrypt.gensalt())
+        filter_criteria = {"email": doc_email}
+
+        update_operation = {
+            "$set": {
+                "password": hashed_password
+            }
+        }
+        collection.update_one(filter_criteria, update_operation)
+        return render_template('passChangeSuccessfully.html')
+    else:
+        return render_template('changeDocPass.html',msg = "Password do not match")
+
+@app.route('/changePatientPassword',methods=['GET', 'POST'])
+def changePatientPassword():
+    f_pass = request.form['f_pass']
+    c_pass = request.form['c_pass']
+    if f_pass == c_pass:
+        patient_email = session.get('patient_email', None)
+        hashed_password = bcrypt.hashpw(c_pass.encode('utf-8'), bcrypt.gensalt())
+        filter_criteria = {"p_email": patient_email}
+
+        update_operation = {
+            "$set": {
+                "p_password": hashed_password
+            }
+        }
+        collection2.update_one(filter_criteria, update_operation)
+        return render_template('passChangeSuccessfully.html')
+    else:
+        return render_template('changePatientPass.html',msg = "Password do not match")
 
 @app.route('/aboutUs')
 @login_required

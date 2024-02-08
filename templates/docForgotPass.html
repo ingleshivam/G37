@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>
+        DIABETIC PREDICTION | EMAIL VERIFICATION
+    </title>
+   <link rel="stylesheet" href="static/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="static/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    <link rel="stylesheet" href="static/assets/css/bootstrap.css">
+</head>
+<body>
+
+   <main class="cd__main glass-morphism">
+      <div id='card' class="animated fadeIn">
+         <div id='upper-side'>
+            <b><p class="text-danger">{{msg}}</p></b>
+            <h3 id='status'>
+               PLEASE ENTER A E-MAIL ADDRESS
+            </h3>
+         </div>
+         <div id='lower-side'>
+            <form class="form-inline" action="/docForgotPass" method="POST">
+               <input type="email" class="form-control mb-4 mr-sm-2" name="doc_email"placeholder="E-Mail" required>
+               <button type="submit" class="btn  mb-2"style="background-color:#8bc34a;color:white;">Submit</button>
+            </form>
+         </div>
+      </div>
+   </main>
+
+<!--<script>-->
+<!--    function preventBack() {-->
+<!--        window.history.forward();-->
+<!--    }-->
+<!--    setTimeout("preventBack()", 0);-->
+<!--    window.onunload = function () { null };-->
+<!--    setTimeout(function() {-->
+<!--        window.location.href = "{{ url_for('login') }}";-->
+<!--    }, 5000);  // 5000 milliseconds (5 seconds)-->
+<!--</script>-->
+</body>
+</html>

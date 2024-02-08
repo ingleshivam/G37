@@ -9,8 +9,8 @@
     <div class="container-scroller">
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <a class="navbar-brand brand-logo"style="color:#b66dff;" href="/home"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
-          <a class="navbar-brand brand-logo-mini"style="color:#b66dff;" href="/home"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
+          <a class="navbar-brand brand-logo"style="color:#b66dff;" href="#"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
+          <a class="navbar-brand brand-logo-mini"style="color:#b66dff;" href="#"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-stretch">
           <ul class="navbar-nav navbar-nav-right">
@@ -54,9 +54,16 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#collapseExample"role="button" aria-expanded="false" aria-controls="collapseExample">
+              <a style="cursor:pointer;"class="nav-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                 <span class="menu-title">Profile</span>
                 <i class="mdi mdi-account menu-icon"></i>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a style="cursor:pointer;"class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <span class="menu-title">Appointments</span>
+                <i class="mdi mdi-calendar menu-icon"></i>
               </a>
             </li>
           </ul>
@@ -64,22 +71,21 @@
 
         <div class="main-panel">
           <div class="content-wrapper">
-            <div class="row collapse show" id="collapseExample">
-              <div class="col-12 grid-margin">
-                <div class="card">
+            <div id="accordion">
+              <div class="card">
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
-                    <div class="card-title">
-                      <p id="para"></p>
+
                     <form action="/patientHome"method="post">
                       <div class="form-group">
                         <div class="row">
                           <div class="form-group col-6">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Name"required>
+                            <input type="text" class="form-control" id="name" value="{{patient.p_name}}" name="name" placeholder="Name"required>
                           </div>
                           <div class="form-group col-6">
                             <label for="email">E-Mail</label>
-                            <input type="text" class="form-control" id="email" name="email" placeholder="E-Mail" value="{{ patient.p_email }}"required disabled>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="E-Mail" value="{{ patient.p_email }}"required readonly>
                           </div>
                         </div>
                       </div>
@@ -88,11 +94,12 @@
                         <div class="row">
                           <div class="form-group col-6">
                             <label for="mob">Mobile Number</label>
-                            <input type="text" class="form-control" id="mob" name="mob" placeholder="Mobile Number" value="{{ patient.p_mob }}"disabled required>
+                            <input type="text" class="form-control" id="mob" name="mob" placeholder="Mobile Number" value="{{ patient.p_mob }}"required readonly>
                           </div>
                           <div class="form-group col-6">
                             <label for="gender" class="form-label">Gender</label>
                               <select class="form-control" id="gender" name="gender" required style="height:67%;">
+                                <option>{{patient.p_gender}}</option>
                                 <option>Male</option>
                                 <option>Female</option>
                               </select>
@@ -103,13 +110,13 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="form-group col-6">
-                              <label for="dob">Select Age</label>
-                              <input type="date" class="form-control datapicker" id="dob" name="dob" placeholder="DOB" required>
+                              <label for="dob">Select Dob</label>
+                              <input type="date" class="form-control datapicker" id="dob" value="{{patient.p_dob}}" name="dob" placeholder="DOB" required>
                           </div>
 
                           <div class="form-group col-6">
                               <label for="age">Age</label>
-                              <input type="text" class="form-control" id="age" name="age" placeholder="Age" disabled required>
+                              <input type="text" class="form-control" id="age" value="{{patient.p_age}}" name="age" placeholder="Age" readonly required>
                               <input type="text" id="formattedDate"class="d-none"name="FDate"/>
                           </div>
                         </div>
@@ -119,11 +126,11 @@
                         <div class="row">
                           <div class="form-group col-6">
                             <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                            <input type="text" class="form-control" id="address" value="{{patient.p_address}}"name="address" placeholder="Address" required>
                           </div>
                           <div class="form-group col-6">
                             <label for="city">City</label>
-                            <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                            <input type="text" class="form-control" id="city" name="city" value="{{patient.p_city}}" placeholder="City" required>
                           </div>
                         </div>
                       </div>
@@ -132,11 +139,12 @@
                         <div class="row">
                           <div class="form-group col-6">
                             <label for="zip">Zip-Code</label>
-                            <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip Code" required>
+                            <input type="text" class="form-control" id="zip" name="zip" value="{{patient.p_zip}}"placeholder="Zip Code" required>
                           </div>
                           <div class="form-group col-6">
                             <label for="state" class="form-label">State</label>
                               <select class="form-control" id="state" name="state" required style="height:67%;">
+                                <option>{{patient.p_state}}</option>
                                 <option>Andhra Pradesh</option>
                                 <option>Arunachal Pradesh</option>
                                 <option>Assam</option>
@@ -169,17 +177,94 @@
                           </div>
                         </div>
                       </div>
-                      <button type="submit" onclick="getResult()" class="btn btn-gradient-primary me-2">Submit</button>
-                      <button type="reset" class="btn btn-gradient-dark">Clear</button>
+                      <button type="submit" onclick="getResult()" class="btn btn-gradient-primary me-2">Update</button>
                     </form>
+
                   </div>
+                </div>
+              </div>
+              <div class="card">
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                  <form action="/appointments" method="POST">
+                  <div class="card-body row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                          <label for="reason" class="form-label">Reason for Visit</label>
+                          <input type="text" class="form-control" name="patient_reason" id="reason" placeholder="Enter reason for visit" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="patient_name" class="form-label">Name</label>
+                          <input type="text" class="form-control" name="patient_name" id="patient_name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="patient_email" class="form-label">Email address</label>
+                          <input type="email" class="form-control" name="patient_email" id="patient_email" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="patient_phone" class="form-label">Phone Number</label>
+                          <input type="tel" class="form-control" id="patient_phone" name="patient_phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="datetime" class="form-label">Select Date</label>
+                          <input type="date" class="form-control" name="patient_date"id="datetime" required>
+                          <input type="text" id="appDate"class="d-none"name="appDate"/>
+                        </div>
+                        <button type="submit" onclick="convertResult()" class="btn btn-primary">Book Appointment</button>
+                    </div>
+                    <div class="col-6">
+                      Select Time
+                      <table class="table table-borderless border border-1 btn-group">
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('09:00 AM')">09:00 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('09:30 AM')">09:30 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('10:00 AM')">10:00 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('10:30 AM')">10:30 AM</button></td>
+                        </tr>
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('11:00 AM')">11:00 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('11:30 AM')">11:30 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('12:00 PM')">12:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('12:30 PM')">12:30 PM</button></td>
+                        </tr>
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('01:00 PM')">01:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('01:30 PM')">01:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('02:00 PM')">02:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('04:00 PM')">04:00 PM</button></td>
+                        </tr>
+
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('04:30 PM')">04:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('05:00 PM')">05:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('05:30 PM')">05:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('06:00 PM')">06:00 PM</button></td>
+                        </tr>
+
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('06:30 PM')">06:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('07:00 PM')">07:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('07:30 PM')">07:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('08:00 PM')">08:00 PM</button></td>
+                        </tr>
+
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('08:30 PM')">08:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('09:00 PM')">09:00 PM</button></td>
+                        </tr>
+                        <tr>
+                          <input type="text" name="patient_time" id="selectedTime" class="form-control mt-2">
+                        </tr>
+
+                      </table>
+                    </div>
+                  </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
     <link rel="stylesheet" href="static/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="static/assets/vendors/css/vendor.bundle.base.css">
@@ -212,6 +297,27 @@
 
             document.getElementById('formattedDate').value=formattedDate;
         }
+    </script>
+
+        <script>
+        function convertResult(){
+            var dobInput = document.getElementById("datetime");
+            var selectedDate = dobInput.value;
+
+            // Convert "yyyy-mm-dd" to "dd-mm-yyyy"
+            var parts = selectedDate.split("-");
+            var formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+
+            document.getElementById('appDate').value=formattedDate;
+        }
+    </script>
+
+    <script>
+      function bookAppointment(time) {
+        // Update the value of the input field with the selected time
+        $('#selectedTime').val(time);
+        // You can add additional logic here if needed
+      }
     </script>
 
 <!--     <script>-->

@@ -13,15 +13,16 @@
    <main class="cd__main glass-morphism">
       <div id='card' class="animated fadeIn">
          <div id='upper-side'>
-            <p class="text-danger">{{msg}}</p>
+<!--            <p class="text-danger">{{msg}}</p>-->
             <h3 id='status'>
-               PLEASE ENTER A VALID E-MAIL ADDRESS
+               One-time password has been sent to your email. Please check your email for the verification
             </h3>
          </div>
          <div id='lower-side'>
-            <form class="form-inline" action="/verify" method="POST">
-               <input type="email" class="form-control mb-4 mr-sm-2" name="v_email"placeholder="E-Mail" required>
+            <form class="form-inline" action="/validateDocOtp" method="post">
+               <input type="text" name="otp"class="form-control mb-4 mr-sm-2" placeholder="OTP" required>
                <button type="submit" class="btn  mb-2"style="background-color:#8bc34a;color:white;">Submit</button>
+                <p class="text-center text-danger">{{msg}}</p>
             </form>
          </div>
       </div>
@@ -33,9 +34,6 @@
 <!--    }-->
 <!--    setTimeout("preventBack()", 0);-->
 <!--    window.onunload = function () { null };-->
-<!--    setTimeout(function() {-->
-<!--        window.location.href = "{{ url_for('login') }}";-->
-<!--    }, 5000);  // 5000 milliseconds (5 seconds)-->
 <!--</script>-->
 </body>
 </html>
