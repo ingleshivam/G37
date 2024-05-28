@@ -168,11 +168,17 @@
         if (glevel === "" || insulin === "" || bmi === "" || dob === "" || age === "") {
             return false;
         } else {
+
+            sessionStorage.gLevel = document.getElementById('glevel').value;
+            sessionStorage.insulin = document.getElementById('insulin').value;
+            sessionStorage.bmi = document.getElementById('bmi').value;
+            sessionStorage.dob = document.getElementById('dob').value;
+            sessionStorage.age = document.getElementById('age').value;
+
             document.getElementById('overlay').style.display = "flex";
             return true;
         }
     }
-
   </script>
   </body>
 </html>

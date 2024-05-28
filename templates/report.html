@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>DIABETIC PREDICTION | REPORT</title>
+    <link rel="stylesheet" href="static/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="static/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    <link rel="stylesheet" href="static/css/home.css">
+  </head>
+  <body>
+    <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+          <div class="row w-100 mx-0">
+            <div class="col-lg-6 mx-auto">
+              <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                <h4 class="text-center">DIABETIC PREDICTION REPORT</h4>
+                <hr>
+                <div class="pt-3">
+                  <p><strong>Result:</strong> <span id="result"></span></p>
+                  <p><strong>Glucose Level:</strong> <span id="glevel"></span></p>
+                  <p><strong>Insulin:</strong> <span id="insulin"></span></p>
+                  <p><strong>BMI:</strong> <span id="bmi"></span></p>
+                  <p><strong>Date of Birth:</strong> <span id="dob"></span></p>
+                  <p><strong>Age:</strong> <span id="age"></span></p>
+                  <p><strong>BMI Category:</strong> <span id="bmi-category"></span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('result').textContent = sessionStorage.result;
+      document.getElementById('glevel').textContent = sessionStorage.gLevel;
+      document.getElementById('insulin').textContent = sessionStorage.insulin;
+      document.getElementById('bmi').textContent = sessionStorage.bmi;
+      document.getElementById('dob').textContent = sessionStorage.dob;
+      document.getElementById('age').textContent = sessionStorage.age;
+
+      var bmi = parseFloat(sessionStorage.bmi);
+      var bmiCategory = '';
+
+      if (bmi < 18.5) {
+        bmiCategory = 'Underweight (BMI less than 18.5)';
+      } else if (bmi >= 18.5 && bmi < 24.9) {
+        bmiCategory = 'Normal weight (BMI 18.5 to 24.9)';
+      } else if (bmi >= 25 && bmi < 29.9) {
+        bmiCategory = 'Overweight (BMI 25 to 29.9)';
+      } else if (bmi >= 30) {
+        bmiCategory = 'Obese (BMI 30 or greater)';
+      } else {
+        bmiCategory = 'Invalid BMI value';
+      }
+
+      document.getElementById('bmi-category').textContent = bmiCategory;
+    </script>
+  </body>
+</html>

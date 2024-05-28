@@ -429,8 +429,24 @@ def changePatientPassword():
 def aboutUs():
     s_username = session.get('s_username','User')
     s_id = session.get('s_id','DR')
-    print(s_id)
     return render_template('aboutUs.html',s_username=s_username,s_id=s_id)
+
+def get_bmi_category(bmi):
+    if bmi < 18.5:
+        return "Underweight"
+    elif 18.5 <= bmi < 24.9:
+        return "Normal weight"
+    elif 25 <= bmi < 29.9:
+        return "Overweight"
+    else:
+        return "Obesity"
+
+@app.route('/report',methods=['GET', 'POST'])
+@login_required
+def report():
+    s_username = session.get('s_username','User')
+    s_id = session.get('s_id','DR')
+    return render_template('report.html',s_username=s_username,s_id=s_id)
 
 @app.route('/predict',methods=['GET', 'POST'])
 @login_required
