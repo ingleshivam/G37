@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PATIENT INFO | HOME</title>
+  </head>
+  <body>
+    <div class="container-scroller">
+      <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+          <a class="navbar-brand brand-logo"style="color:#b66dff;" href="#"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
+          <a class="navbar-brand brand-logo-mini"style="color:#b66dff;" href="#"><h4 class="pl-2 d-inline-block font-weight-bold">DIABETIC PREDICTION</h4></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-stretch">
+          <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item nav-profile dropdown">
+              <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="nav-profile-img">
+                  <img src="static/images/dypcet.png" alt="image">
+                </div>
+                <div class="nav-profile-text">
+                  <p class="mb-1 text-black">{{p_username}}</p>
+                </div>
+              </a>
+              <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                <a class="dropdown-item" href="{{url_for('logout')}}">
+                  <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="container-fluid page-body-wrapper">
+
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item nav-profile">
+              <a href="#" class="nav-link">
+                <div class="nav-profile-image">
+                  <img src="static/images/dypcet.png" alt="profile">
+                  <span class="login-status online"></span>
+
+                </div>
+                <div class="nav-profile-text d-flex flex-column">
+                  <span class="font-weight-bold mb-2">{{p_username}}</span>
+                  <span class="text-secondary text-small">Id : {{P_id}}</span>
+                </div>
+                <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a style="cursor:pointer;"class="nav-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <span class="menu-title">Profile</span>
+                <i class="mdi mdi-account menu-icon"></i>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a style="cursor:pointer;"class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <span class="menu-title">Appointments</span>
+                <i class="mdi mdi-calendar menu-icon"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div id="accordion">
+              <div class="card">
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="card-body">
+
+                    <form action="/patientHome"method="post">
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" value="{{patient.p_name}}" name="name" placeholder="Name"required>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="email">E-Mail</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="E-Mail" value="{{ patient.p_email }}"required readonly>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="mob">Mobile Number</label>
+                            <input type="text" class="form-control" id="mob" name="mob" placeholder="Mobile Number" value="{{ patient.p_mob }}"required readonly>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="gender" class="form-label">Gender</label>
+                              <select class="form-control" id="gender" name="gender" required style="height:67%;">
+                                <option>{{patient.p_gender}}</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                              </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="form-group col-6">
+                              <label for="dob">Select Dob</label>
+                              <input type="date" class="form-control datapicker" id="dob" value="{{patient.p_dob}}" name="dob" placeholder="DOB" required>
+                          </div>
+
+                          <div class="form-group col-6">
+                              <label for="age">Age</label>
+                              <input type="text" class="form-control" id="age" value="{{patient.p_age}}" name="age" placeholder="Age" readonly required>
+                              <input type="text" id="formattedDate"class="d-none"name="FDate"/>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" value="{{patient.p_address}}"name="address" placeholder="Address" required>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" name="city" value="{{patient.p_city}}" placeholder="City" required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="zip">Zip-Code</label>
+                            <input type="text" class="form-control" id="zip" name="zip" value="{{patient.p_zip}}"placeholder="Zip Code" required>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="state" class="form-label">State</label>
+                              <select class="form-control" id="state" name="state" required style="height:67%;">
+                                <option>{{patient.p_state}}</option>
+                                <option>Andhra Pradesh</option>
+                                <option>Arunachal Pradesh</option>
+                                <option>Assam</option>
+                                <option>Bihar</option>
+                                <option>Chhattisgarh</option>
+                                <option>Goa</option>
+                                <option>Gujarat</option>
+                                <option>Haryana</option>
+                                <option>Himachal Pradesh</option>
+                                <option>Jharkhand</option>
+                                <option>Karnataka</option>
+                                <option>Kerala</option>
+                                <option>Madhya Pradesh</option>
+                                <option>Maharashtra</option>
+                                <option>Manipur</option>
+                                <option>Meghalaya</option>
+                                <option>Mizoram</option>
+                                <option>Nagaland</option>
+                                <option>Odisha</option>
+                                <option>Punjab</option>
+                                <option>Rajasthan</option>
+                                <option>Sikkim</option>
+                                <option>Tamil Nadu</option>
+                                <option>Telangana</option>
+                                <option>Tripura</option>
+                                <option>Uttar Pradesh</option>
+                                <option>Uttarakhand</option>
+                                <option>West Bengal</option>
+                              </select>
+                          </div>
+                        </div>
+                      </div>
+                      <button type="submit" onclick="getResult()" class="btn btn-gradient-primary me-2">Update</button>
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                  <form action="/appointments" method="POST">
+                  <div class="card-body row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                          <label for="reason" class="form-label">Reason for Visit</label>
+                          <input type="text" class="form-control" name="patient_reason" id="reason" placeholder="Enter reason for visit" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="patient_name" class="form-label">Name</label>
+                          <input type="text" class="form-control" name="patient_name" id="patient_name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="patient_email" class="form-label">Email address</label>
+                          <input type="email" class="form-control" name="patient_email" id="patient_email" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="patient_phone" class="form-label">Phone Number</label>
+                          <input type="tel" class="form-control" id="patient_phone" name="patient_phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="datetime" class="form-label">Select Date</label>
+                          <input type="date" class="form-control" name="patient_date"id="datetime" required>
+                          <input type="text" id="appDate"class="d-none"name="appDate"/>
+                        </div>
+                        <button type="submit" onclick="convertResult()" class="btn btn-primary">Book Appointment</button>
+                    </div>
+                    <div class="col-6">
+                      Select Time
+                      <table class="table table-borderless border border-1 btn-group">
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('09:00 AM')">09:00 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('09:30 AM')">09:30 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('10:00 AM')">10:00 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('10:30 AM')">10:30 AM</button></td>
+                        </tr>
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('11:00 AM')">11:00 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('11:30 AM')">11:30 AM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('12:00 PM')">12:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('12:30 PM')">12:30 PM</button></td>
+                        </tr>
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('01:00 PM')">01:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('01:30 PM')">01:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('02:00 PM')">02:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('04:00 PM')">04:00 PM</button></td>
+                        </tr>
+
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('04:30 PM')">04:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('05:00 PM')">05:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('05:30 PM')">05:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('06:00 PM')">06:00 PM</button></td>
+                        </tr>
+
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('06:30 PM')">06:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('07:00 PM')">07:00 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('07:30 PM')">07:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('08:00 PM')">08:00 PM</button></td>
+                        </tr>
+
+                        <tr>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('08:30 PM')">08:30 PM</button></td>
+                          <td><button type="button" class="btn btn-outline-primary btn-sm" onclick="bookAppointment('09:00 PM')">09:00 PM</button></td>
+                        </tr>
+                        <tr>
+                          <input type="text" name="patient_time" id="selectedTime" class="form-control mt-2">
+                        </tr>
+
+                      </table>
+                    </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <link rel="stylesheet" href="static/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="static/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    <link rel="stylesheet" href="static/assets/css/home.css">
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="static/assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="static/assets/vendors/chart.js/Chart.min.js"></script>
+    <script src="static/assets/js/jquery.cookie.js" type="text/javascript"></script>
+    <script src="static/assets/js/off-canvas.js"></script>
+    <script src="static/assets/js/hoverable-collapse.js"></script>
+    <script src="static/assets/js/misc.js"></script>
+    <script src="static/assets/js/dashboard.js"></script>
+    <script src="static/assets/js/todolist.js"></script>
+    <script src="static/assets/js/index.js"></script>
+
+    <script>
+        function getResult(){
+            var dobInput = document.getElementById("dob");
+            var selectedDate = dobInput.value;
+
+            // Convert "yyyy-mm-dd" to "dd-mm-yyyy"
+            var parts = selectedDate.split("-");
+            var formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+
+            document.getElementById('formattedDate').value=formattedDate;
+        }
+    </script>
+
+        <script>
+        function convertResult(){
+            var dobInput = document.getElementById("datetime");
+            var selectedDate = dobInput.value;
+
+            // Convert "yyyy-mm-dd" to "dd-mm-yyyy"
+            var parts = selectedDate.split("-");
+            var formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+
+            document.getElementById('appDate').value=formattedDate;
+        }
+    </script>
+
+    <script>
+      function bookAppointment(time) {
+        // Update the value of the input field with the selected time
+        $('#selectedTime').val(time);
+        // You can add additional logic here if needed
+      }
+    </script>
+
+<!--     <script>-->
+<!--    function preventBack() {-->
+<!--        window.history.forward();-->
+<!--    }-->
+<!--    setTimeout("preventBack()", 0);-->
+<!--    window.onunload = function () { null };-->
+<!--    </script>-->
+
+  </body>
+</html>
